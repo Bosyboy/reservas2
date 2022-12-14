@@ -1,0 +1,52 @@
+<div class="container p-4">
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <table id="example" class="table table-hover">
+        <thead class="text-muted">
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>correo</th>
+            <th>Cuenta Asociada</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each usuarios}}
+            <tr>
+              <td>
+                {{id}}
+              </td>
+              <td>
+                {{fullname}}
+              </td>
+              <td>
+                {{email}}
+              </td>
+              <td>
+                {{correo}}
+              </td>
+              <td class="text-right">
+                <a
+                  name=""
+                  id=""
+                  class="btn btn-warning"
+                  href="/personas/edit/{{id}}"
+                  role="button"
+                ><i class="fa fa-pen" aria-hidden="true"></i></a>
+                <a
+                  name=""
+                  id=""
+                  class="btn btn-danger"
+                  href="/personas/eliminar/{{id}}"
+                  role="button"
+                ><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

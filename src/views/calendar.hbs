@@ -1,0 +1,144 @@
+<div class="container p-4">
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <div class="row">
+        <div class="col-4 mx-auto">
+      <div class="card card-body bg-dark text-white text-center">
+        <h1 class="fw-bold">Bloques Horarios</h1>
+        <h4>Seleccione en el calendario. Recuerde guardar los cambios</h4>
+        {{#each bloques}}
+            <p class="text-left"><input class="form-check-input color_{{idbloque}}" type="checkbox" checked>     Bloque {{idbloque}} - {{comienza}} - {{termina}}</p>
+        {{/each}}
+        <a href="/links" class="btn btn-primary m-4">
+          Guardar Cambios
+        </a>
+      </div>
+        </div>
+        <div class="col-8 mx-auto">
+          <div class="panel panel-default">
+            <div class="panel-body bg-ligth">
+              <div class="calendar fc fc-ltr">
+                <table class="fc-header" style="width:100%">
+                  <tbody>
+                    <tr>
+                      <td class="fc-header-left">
+                        <div class="btn-group">
+                          <button
+                            type="button"
+                            class="fc-button-prev fc-corner-left btn btn-default btn-sm"
+                          >
+                            <i class="fa fa-chevron-left"></i>
+
+                          </button>
+                          <button type="button" class="btn btn-default btn-sm">
+                            <i class="fa fa-chevron-right"></i>
+
+                          </button>
+                        </div>
+
+                      </td>
+                      <td class="fc-header-center">
+                        <span class="fc-header-title">
+                          <h2>{{fecha.mes}}</h2>
+                        </span>
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  class="fc-content"
+                  style="position: relative; min-height: 1px;"
+                >
+                  <div
+                    class="fc-view fc-view-month fc-grid"
+                    style="position: relative; min-height: 1px;"
+                    unselectable="on"
+                  >
+                    <table
+                      class="fc-border-separate"
+                      style="width:100%"
+                      cellspacing="0"
+                    >
+                      <thead>
+                        <tr class="fc-first fc-last">
+                          <th
+                            class="fc-day-header fc-mon fc-widget-header fc-first"
+                            style="width: 158px;"
+                          >Lunes</th>
+                          <th
+                            class="fc-day-header fc-tue fc-widget-header"
+                            style="width: 158px;"
+                          >Martes</th>
+                          <th
+                            class="fc-day-header fc-wed fc-widget-header"
+                            style="width: 158px;"
+                          >Miercoles</th>
+                          <th
+                            class="fc-day-header fc-thu fc-widget-header"
+                            style="width: 158px;"
+                          >Jueves</th>
+                          <th
+                            class="fc-day-header fc-fri fc-widget-header"
+                            style="width: 158px;"
+                          >Viernes</th>
+                          <th
+                            class="fc-day-header fc-sat fc-widget-header"
+                            style="width: 158px;"
+                          >Sabado</th>
+                          <th
+                            class="fc-day-header fc-sun fc-widget-header fc-last"
+                            style="width: 158px;"
+                          >Domingo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each calendario }}
+                          <tr class="fc-week fc-first">
+                            {{#each this}}
+                              <td
+                                class="fc-day fc-sun fc-widget-content fc-other-month fc-first"
+                                data-date="2013-12-29"
+                              >
+                                <div style="min-height: 80px;">
+                                  <div class="fc-day-number">
+                                    {{this.dia}}
+                                  </div>
+                                  <div class="fc-day-content">
+                                    <div class="row">
+                                        <input class="form-check-input color_1" type="checkbox" value="1" id="{{this.fecha}}">                                      
+                                        <input class="form-check-input color_2" type="checkbox" value="2" id="{{this.fecha}}">
+                                        <input class="form-check-input color_3" type="checkbox" value="3" id="{{this.fecha}}">
+                                        <input class="form-check-input color_4" type="checkbox" value="4" id="{{this.fecha}}">
+                                        <input class="form-check-input color_5" type="checkbox" value="5" id="{{this.fecha}}">
+                                        <input class="form-check-input color_6" type="checkbox" value="6" id="{{this.fecha}}">
+                                        <input class="form-check-input color_7" type="checkbox" value="7" id="{{this.fecha}}">
+                                        <input class="form-check-input color_8" type="checkbox" value="8" id="{{this.fecha}}">
+                                        <input class="form-check-input color_9" type="checkbox" value="9" id="{{this.fecha}}">
+                                        <input class="form-check-input color_10" type="checkbox" value="10" id="{{this.fecha}}">
+                                        <input class="form-check-input color_11" type="checkbox" value="11" id="{{this.fecha}}">
+                                        <input class="form-check-input color_12" type="checkbox" value="12" id="{{this.fecha}}">                                        
+                                    </div>
+                                    
+                                    <div
+                                      style="position: relative; height: 25px;"
+                                    > </div>
+                                  </div>
+                                </div>
+                              </td>
+                            {{/each}}
+                          </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

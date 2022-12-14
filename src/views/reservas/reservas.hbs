@@ -1,0 +1,200 @@
+<div class="container p-4">
+  <div class="row">
+    <main>
+      {{#if persona}}
+      <div class="py-5 text-center">
+        <h2>Bienvenido {{user.fullname}}</h2>
+        <p class="lead">Para realizar una reserva. Debe seleccionar el especialista por el cual desea ser atendido</p>
+      </div>
+      <div class="row g-5">
+        <div class="col-md-5 col-lg-4 order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-primary">Tus reservas</span>
+          </h4>
+          <ul class="list-group mb-3">
+            {{#if reservas}}
+            {{#each reservas}}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div class="col-8">
+                <small class="text-muted">{{servicio}}</small>
+                <h6 class="my-0">{{hora}}</h6>
+                <small class="text-muted">{{nombre}}</small>
+              </div>
+              <div class="col-4">
+                <span class="text-muted">{{fecha}}</span><br>
+                <p>
+                  <a name="" id="" class="btn btn-danger" href="/reservas/eliminar/{{idreservas}}"
+                    role="button">Anular</a>
+                </p>
+              </div>
+            </li>
+            {{/each}}
+            {{else}}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+
+                <h6 class="my-0">Sin reservas</h6>
+                <small class="text-muted">Sus reservas aparecerán aquí.</small>
+
+              </div>
+            </li>
+            {{/if}}
+          </ul>
+        </div>
+        <div class="col-md-7 col-lg-8">
+          <h4 class="mb-3">Buscar hora</h4>
+
+          <form action="" method="POST" class="needs-validation" novalidate>
+            <div class="row g-3">
+              <div class="col-sm-12">
+                <label for="servicio" class="form-label">Servicios</label>
+                <select class="form-select" name="servicios" required />
+                <option value="">Elegir...</option>
+                {{#each servicios}}
+                <option value="{{ this.idservicios }}">{{ this.nombre }}</option>
+                {{/each}}
+                </select>
+                <div class="invalid-feedback">
+                  Elija un servicio valido.
+                </div>
+              </div>
+              <div class="col-12">
+                <label for="fecha_solicitada" class="form-label">Fecha requerida</label>
+                <div class="input-group date">
+                  <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="fecha" required /><span
+                    class="input-group-addon"></span>
+                </div>
+              </div>
+
+            </div>
+            <hr class="my-4">
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Consultar disponibilidad</button>
+          </form>
+
+          {{#if horas}}
+          <hr class="my-4">
+          <h4 class="mb-3">Horas Disponibles</h4>
+          <table id="example" class="table table-hover">
+            <thead class="text-muted">
+              <tr>
+                <th>Especialista</th>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each horas}}
+              <tr>
+                <td>
+                  {{nombre}}
+                </td>
+                <td>
+                  {{fecha}}
+                </td>
+                <td>
+                  {{hora}}
+                </td>
+                <td class="text-right">
+                  <a name="" id="" class="btn btn-success" href="/reservas/tomar/{{idagenda}}" role="button"><i
+                      class="fa fa-check" aria-hidden="true"></i></a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <hr class="my-4">
+          {{/if}}
+        </div>
+      </div>
+      {{else}}
+      <div class="py-5 text-center">
+        <h2>Datos de usuario</h2>
+        <p class="lead">Completa los datos a continuacion, de esta manera podremos contactarnos con usted.</p>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h4 class="mb-3">Datos de contacto</h4>
+          <form action="/reservas/agregar" method="POST" class="needs-validation" novalidate>
+            <div class="row g-3">
+              <div class="col-4">
+                <label for="nombres" class="form-label">Nombre</label>
+                <div class="input-group has-validation">
+                <input type="text" class="form-control"  name="nombres" id="nombres" placeholder="Nombre" value="" required>
+                <div class="invalid-feedback">
+                  Dato obligatorio.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <label for="apepat" class="form-label">Apellido Paterno</label>
+                <div class="input-group has-validation">
+                <input type="text" class="form-control"  name="apepat" id="apepat" placeholder="Apellido Paterno" value="" required>
+                <div class="invalid-feedback"> 
+                  Dato obligatorio.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <label for="apemat" class="form-label">Apellido Materno</label>
+                <div class="input-group has-validation">
+                  <input type="text" class="form-control"  name="apemat" id="apemat" placeholder="Apellido Materno" required>
+                  <div class="invalid-feedback">
+                    Dato obligatorio.
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <label for="rut" class="form-label">RUT</label>
+                <div class="input-group has-validation">
+                  <input type="rut" class="form-control"  minlength="12" maxlength="12" name="rut" id="rut" placeholder="XX.XXX.XXX-X">
+                  <div class="invalid-feedback">
+                    Dato obligatorio.
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <label for="correo" class="form-label">Correo</label>
+                <div class="input-group has-validation">
+                  <input type="correo" class="form-control"  name="correo" id="correo" placeholder="tu@correo.com">
+                  <div class="invalid-feedback">
+                    Dato obligatorio.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <div class="input-group has-validation">
+                <input type="text" class="form-control"  name="telefono" id="telefono" placeholder="+56123456789" minlength="9" maxlength="12" required>
+
+                  <div class="invalid-feedback">
+                    Dato obligatorio.
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <label for="prevision" class="form-label">Prevision</label>
+                <div class="input-group has-validation">
+                <input type="text" class="form-control"  name="prevision" id="previsionn" placeholder="Previsio o Isapre" minlength="9" maxlength="128" required>
+
+                  <div class="invalid-feedback">
+                    Dato obligatorio.
+                  </div>
+                </div>
+              </div>                            
+
+            <hr class="my-4">
+
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Continuar a reservas</button>
+          </form>
+        </div>
+      </div>
+
+      {{/if}}
+    </main>
+  </div>
+</div>

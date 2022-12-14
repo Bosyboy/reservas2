@@ -1,0 +1,116 @@
+<div class="container p-4">
+  <div class="row">
+      <main>
+    <div class="py-5 text-center">
+      <h2>Bienvenido {{user.fullname}}</h2>
+      <p class="lead">Para realizar una reserva. Debe seleccionar el especialista por el cual desea ser atendido</p>
+    </div>
+    <div class="row g-5">
+      <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Tus reservas</span>
+        </h4>
+        <ul class="list-group mb-3">
+          {{#if reservas}}
+          {{#each reservas}}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <small class="text-muted">{{servicio}}</small>
+                <h6 class="my-0">{{hora}}</h6>
+                <small class="text-muted">{{nombre}}</small>
+                
+              </div>            
+              <span class="text-muted">{{fecha}}</span>
+                                      <a name=""
+                          id=""
+                          class="btn btn-success"
+                          href="/eliminar/{{idagenda}}"
+                          role="button"
+                        ><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </li>
+          {{/each}}
+          {{else}}
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+              
+                <h6 class="my-0">Sin reservas</h6>
+                <small class="text-muted">Sus reservas aparecerán aquí.</small>
+                
+              </div>                          
+            </li>
+          {{/if}}
+        </ul>
+      </div>
+      <div class="col-md-7 col-lg-8">
+        <h4 class="mb-3">Buscar hora</h4>
+        
+        <form action="/buscarReserva" method="POST" class="needs-validation" novalidate>
+          <div class="row g-3">
+            <div class="col-sm-12">
+              <label for="servicio" class="form-label">Servicios</label>
+              <select class="form-select" name="servicios" required/>
+                <option value="">Elegir...</option>
+                {{#each servicios}}
+                <option value="{{ this.idservicios }}">{{ this.nombre }}</option>
+                {{/each}}
+              </select>
+              <div class="invalid-feedback">
+                Elija un servicio valido.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="fecha_solicitada" class="form-label">Fecha requerida</label>
+                <div class="input-group date">
+                  <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="fecha" required/><span class="input-group-addon"></span>
+                </div>
+            </div>
+
+          </div>
+          <hr class="my-4">
+          <button class="w-100 btn btn-primary btn-lg" type="submit">Consultar disponibilidad</button>
+        </form>
+
+        {{#if horas}}
+              <hr class="my-4">
+              <h4 class="mb-3">Horas Disponibles</h4>
+                <table id="example" class="table table-hover">
+                <thead class="text-muted">
+                  <tr>
+                    <th>Especialista</th>
+                    <th>Fecha</th>
+                    <th>Horario</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each horas}}
+                    <tr>
+                      <td>
+                        {{nombre}}
+                      </td>
+                      <td>
+                        {{fecha}}
+                      </td>
+                      <td>
+                        {{hora}}
+                      </td>
+                      <td class="text-right">
+                        <a name=""
+                          id=""
+                          class="btn btn-success"
+                          href="/tomar/{{idagenda}}"
+                          role="button"
+                        ><i class="fa fa-check" aria-hidden="true"></i></a>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+                </table>
+          <hr class="my-4">
+        {{/if}}
+      </div>
+    </div>
+  </main>
+  </div>
+</div>

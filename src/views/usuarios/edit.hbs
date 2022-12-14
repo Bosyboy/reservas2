@@ -1,0 +1,75 @@
+<div class="container">
+    {{#each usuarios}}
+    <form method="POST" action="../add">
+    <input type="hidden" class="form-control" value="{{id}}" name="id_usuario" id="inputName">
+    <div class="row">
+        <div class="solicitud col-12 pt-1">
+            <h2 class="solicitud">Detalles de Usuario</h2>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 pb-5">
+            <div class="card solicitud">
+                <div class="card-header">
+                    <div class="row  align-items-center">
+                        <div class="col-12">
+                            <h4>{{username}}</h4>
+                            <small>{{fullname}}</small>
+                            <h4>{{correo}}</h4>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Permisos de Usuario</h4>
+                            <table class="table table-striped table-inverse">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Categoria</th>
+                                        <th>Permiso</th>
+                                        <th>Borrar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each permisos}}
+                                    <tr>
+                                        <td>{{id}}</td>
+                                        <td>{{menu}}</td>
+                                        <td>{{nombre}}</td>
+                                        <td><a href="borrar/{{id_permiso}}"><i class="fa fa-trash"
+                                                    aria-hidden="true"></i></a></td>
+                                    </tr>
+                                    {{/each}}
+                                    <tr>
+                                        <td>Añadir Permiso</td>
+                                        <td colspan="3">
+                                            
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <select class="form-control" name="id_menu" id="permiso">
+                                                            {{#each opciones}}
+                                                            <option value="{{id_menu}}">{{menu}} {{nombre}}</option>
+                                                            {{else}}
+                                                            <option>Ya los tiene.</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <button type="submit" class="btn btn-primary">Añadir</button>
+                                                    </div>
+                                                </div>
+                                            
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
