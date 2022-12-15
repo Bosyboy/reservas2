@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `agenda` (
   KEY `fk_rel_agenda_bloque_idx` (`idbloque`),
   CONSTRAINT `fk_rel_agenda_bloque` FOREIGN KEY (`idbloque`) REFERENCES `bloque` (`idbloque`),
   CONSTRAINT `fk_rel_agenda_empleados` FOREIGN KEY (`idempleados`) REFERENCES `empleados` (`idempleados`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS `atencion` (
   `idatencion` int NOT NULL AUTO_INCREMENT,
   `idpacientes` int NOT NULL,
   `idempleados` int NOT NULL,
-  `fecha` datetime NOT NULL,
-  `hora` time NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idpago` int NOT NULL,
   `estado` varchar(45) DEFAULT NULL,
+  `obs` text,
   PRIMARY KEY (`idatencion`),
   KEY `fk_rel_atencionpacientes_idx` (`idpacientes`),
   KEY `fk_rel_atencion_pago_idx` (`idpago`),
@@ -65,12 +65,12 @@ CREATE TABLE IF NOT EXISTS `bloque` (
 -- Volcando estructura para tabla railway.documentos
 CREATE TABLE IF NOT EXISTS `documentos` (
   `iddocumento` int NOT NULL AUTO_INCREMENT,
-  `idficha` int NOT NULL,
-  `documento` int DEFAULT NULL,
+  `documento` text NOT NULL,
   `observaciones` text,
-  PRIMARY KEY (`iddocumento`,`idficha`),
-  KEY `fk_ficha_doc_idx` (`idficha`),
-  CONSTRAINT `fk_ficha_doc` FOREIGN KEY (`idficha`) REFERENCES `fichas` (`idfichas`)
+  `idatencion` int NOT NULL,
+  PRIMARY KEY (`iddocumento`),
+  KEY `FK1_rel_doc_atencion` (`idatencion`),
+  CONSTRAINT `FK1_rel_doc_atencion` FOREIGN KEY (`idatencion`) REFERENCES `atencion` (`idatencion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
@@ -86,19 +86,7 @@ CREATE TABLE IF NOT EXISTS `empleados` (
   KEY `fk_rel_empleados_servicios_idx` (`idservicios`),
   CONSTRAINT `FK1_rel_empleados_personas` FOREIGN KEY (`idpersonas`) REFERENCES `personas` (`idpersonas`),
   CONSTRAINT `FK2_rel_empleados_servicios` FOREIGN KEY (`idservicios`) REFERENCES `servicios` (`idservicios`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- La exportación de datos fue deseleccionada.
-
--- Volcando estructura para tabla railway.fichas
-CREATE TABLE IF NOT EXISTS `fichas` (
-  `idfichas` int NOT NULL AUTO_INCREMENT,
-  `idatencion` int DEFAULT NULL,
-  `observacion` text,
-  PRIMARY KEY (`idfichas`),
-  KEY `fk_rel_ficha_aten_idx` (`idatencion`),
-  CONSTRAINT `fk_rel_ficha_aten` FOREIGN KEY (`idatencion`) REFERENCES `atencion` (`idatencion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -110,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
   PRIMARY KEY (`idpacientes`,`idpersonas`),
   KEY `fk_pac_pec_idx` (`idpersonas`),
   CONSTRAINT `fk_pac_pec` FOREIGN KEY (`idpersonas`) REFERENCES `personas` (`idpersonas`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -118,13 +106,9 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
 CREATE TABLE IF NOT EXISTS `pagos` (
   `idpagos` int NOT NULL,
   `monto` varchar(45) DEFAULT NULL,
-  `idreserva` int NOT NULL,
-  `fecha` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `observacion` text,
-  PRIMARY KEY (`idpagos`),
-  KEY `rel_pago_reserva_idx` (`idreserva`),
-  CONSTRAINT `rel_pago_reserva` FOREIGN KEY (`idreserva`) REFERENCES `reservas` (`idreservas`)
+  PRIMARY KEY (`idpagos`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
@@ -142,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `personas` (
   PRIMARY KEY (`idpersonas`),
   KEY `FK_personas_users` (`idusuario`),
   CONSTRAINT `FK_personas_users` FOREIGN KEY (`idusuario`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -150,18 +134,15 @@ CREATE TABLE IF NOT EXISTS `personas` (
 CREATE TABLE IF NOT EXISTS `reservas` (
   `idreservas` int NOT NULL AUTO_INCREMENT,
   `idusuario` int NOT NULL,
-  `idpacientes` int DEFAULT NULL,
   `idagenda` int NOT NULL,
   `estado` int DEFAULT NULL,
   `fechareserva` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idreservas`),
   KEY `fk_rel_reservas_usuarios_idx` (`idusuario`),
-  KEY `fk_rel_reservas_paciente_idx` (`idpacientes`),
   KEY `fk_rel_reservas_agenda` (`idagenda`),
   CONSTRAINT `fk_rel_reservas_agenda` FOREIGN KEY (`idagenda`) REFERENCES `agenda` (`idagenda`),
-  CONSTRAINT `FK_reservas_pacientes` FOREIGN KEY (`idpacientes`) REFERENCES `pacientes` (`idpacientes`),
   CONSTRAINT `FK_reservas_users` FOREIGN KEY (`idusuario`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -171,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `servicios` (
   `nombre` varchar(256) DEFAULT NULL,
   `descripcion` text,
   PRIMARY KEY (`idservicios`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -193,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(60) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
