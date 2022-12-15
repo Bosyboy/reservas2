@@ -13,6 +13,8 @@ import { port } from "./config.js";
 import "./lib/passport.js";
 import * as helpers from "./lib/handlebars.js";
 import { pool } from "./database.js";
+import multer from "multer";
+import { v4 as uuidv4 } from 'uuid'
 
 // Intializations
 const app = express();
@@ -49,6 +51,12 @@ app.use(
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, 'public/uploads'),
+  filename: (req, file, cb) => {
+      cb(null, uuid.v4() + path.extname(file.originalname).toLocaleLowerCase());
+  }
+})
 
 // Global variables
 app.use((req, res, next) => {

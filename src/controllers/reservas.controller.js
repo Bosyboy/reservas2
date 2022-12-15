@@ -27,7 +27,10 @@ export const listarReservas = async (req, res, next) => {
     const [pacientes] = await pool.query('SELECT a.*, b.* FROM personas a JOIN pacientes b ON a.idpersonas = b.idpersonas WHERE a.idusuario = ?', [req.user.id])
     const [reservas] = await pool.query('SELECT a.idreservas, DATE_FORMAT(b.fecha,"%d/%m/%Y") AS fecha, DATE_FORMAT(c.comienza,"%H:%i") AS hora, CONCAT(e.nombres, " ",e.apepat, " ", e.apemat) AS nombre, f.nombre AS servicio FROM reservas a JOIN agenda b ON a.idagenda = b.idagenda JOIN bloque c ON b.idbloque = c.idbloque JOIN empleados d ON d.idempleados = b.idempleados JOIN personas e ON e.idpersonas = d.idpersonas JOIN servicios f ON f.idservicios = d.idservicios WHERE a.idusuario = ? ORDER BY a.idreservas ASC', [req.user.id])
     const [rows] = await pool.query("SELECT * FROM servicios")
-    res.render("reservas/reservas",{ servicios : rows , reservas : reservas , reservas : reservas, pacientes : pacientes, persona: persona})
+    const [empleado] = await pool.query('SELECT a.idreservas, DATE_FORMAT(b.fecha,"%d/%m/%Y") AS fecha, DATE_FORMAT(c.comienza,"%H:%i") AS hora, CONCAT(g.nombres, " ",g.apepat, " ", g.apemat) AS nombre FROM reservas a JOIN agenda b ON a.idagenda = b.idagenda JOIN bloque c ON b.idbloque = c.idbloque JOIN empleados d ON d.idempleados = b.idempleados JOIN personas e ON e.idpersonas = d.idpersonas JOIN servicios f ON f.idservicios = d.idservicios JOIN personas g ON g.idusuario =  a.idusuario WHERE e.idusuario = ? ORDER BY a.idreservas ASC', [req.user.id])
+    const [confirmados] = await pool.query('SELECT a.idreservas, DATE_FORMAT(b.fecha,"%d/%m/%Y") AS fecha, DATE_FORMAT(c.comienza,"%H:%i") AS hora, CONCAT(g.nombres, " ",g.apepat, " ", g.apemat) AS nombre FROM reservas a JOIN agenda b ON a.idagenda = b.idagenda JOIN bloque c ON b.idbloque = c.idbloque JOIN empleados d ON d.idempleados = b.idempleados JOIN personas e ON e.idpersonas = d.idpersonas JOIN servicios f ON f.idservicios = d.idservicios JOIN personas g ON g.idusuario =  a.idusuario WHERE e.idusuario = ? AND a.estado = 1 ORDER BY a.idreservas ASC', [req.user.id])
+    const [pendientes] = await pool.query('SELECT a.idreservas, DATE_FORMAT(b.fecha,"%d/%m/%Y") AS fecha, DATE_FORMAT(c.comienza,"%H:%i") AS hora, CONCAT(g.nombres, " ",g.apepat, " ", g.apemat) AS nombre FROM reservas a JOIN agenda b ON a.idagenda = b.idagenda JOIN bloque c ON b.idbloque = c.idbloque JOIN empleados d ON d.idempleados = b.idempleados JOIN personas e ON e.idpersonas = d.idpersonas JOIN servicios f ON f.idservicios = d.idservicios JOIN personas g ON g.idusuario =  a.idusuario WHERE e.idusuario = ? AND a.estado = 0 ORDER BY a.idreservas ASC', [req.user.id])
+    res.render("reservas/reservas",{ servicios : rows , reservas : reservas , reservas : reservas, pacientes : pacientes, persona: persona, empleado: empleado, confirmados: confirmados, pendientes:pendientes})
 };
 
 export const buscarReserva = async (req, res, next) => {
@@ -41,7 +44,8 @@ export const buscarReserva = async (req, res, next) => {
     const [reservas] = await pool.query('SELECT a.idreservas, DATE_FORMAT(b.fecha,"%d/%m/%Y") AS fecha, DATE_FORMAT(c.comienza,"%H:%i") AS hora, CONCAT(e.nombres, " ",e.apepat, " ", e.apemat) AS nombre, f.nombre AS servicio FROM reservas a JOIN agenda b ON a.idagenda = b.idagenda JOIN bloque c ON b.idbloque = c.idbloque JOIN empleados d ON d.idempleados = b.idempleados JOIN personas e ON e.idpersonas = d.idpersonas JOIN servicios f ON f.idservicios = d.idservicios WHERE a.idusuario = ? ORDER BY a.idreservas ASC', [req.user.id]) 
     const [horas] = await pool.query('SELECT DATE_FORMAT(a.fecha,"%d/%m/%Y") AS fecha, CONCAT(d.nombres, " ",d.apepat, " ", d.apemat) AS nombre , DATE_FORMAT(b.comienza,"%H:%i") AS hora, a.idagenda FROM agenda as a INNER JOIN bloque AS b ON a.idbloque = b.idbloque INNER JOIN empleados AS c ON a.idempleados = c.idempleados INNER JOIN personas AS d ON c.idpersonas = d.idpersonas LEFT JOIN reservas e ON e.idagenda = a.idagenda WHERE DATE(a.fecha) >= ? AND c.idservicios = ? AND e.idagenda IS NULL ORDER by a.fecha ASC LIMIT 5', [fecha, serviciosForm]) 
     const [rows] = await pool.query("SELECT * FROM servicios")
-    res.render("reservas/reservas",{ servicios : rows , reservas : reservas , reservas : reservas, pacientes : pacientes, persona: persona, horas:horas})
+    const [empleado] = []
+    res.render("reservas/reservas",{ servicios : rows , reservas : reservas , reservas : reservas, pacientes : pacientes, persona: persona, horas:horas, empleado: empleado})
 };
   
 export const tomarReserva = async (req, res, next) => {
@@ -54,6 +58,36 @@ export const tomarReserva = async (req, res, next) => {
     await pool.query("INSERT INTO reservas set ?", [nuevo])
     res.redirect("/reservas")
 };
+
+export const confirmarReserva = async (req, res, next) => {
+    const { id } = req.params
+    const nuevo = { 
+      estado : 1 
+    }
+    await pool.query("UPDATE reservas SET ? WHERE idreservas = ?", [nuevo,id] )
+    res.redirect("/reservas")
+};
+export const pendienteReserva = async (req, res, next) => {
+    const { id } = req.params
+    const nuevo = { 
+      estado : 0 
+    }
+    await pool.query("UPDATE reservas SET ? WHERE idreservas = ?", [nuevo,id] )
+    res.redirect("/reservas")
+};
+
+export const atenderReserva = async (req, res, next) => {
+    const { id } = req.params
+    const nuevo = { 
+      estado : 2 
+    }
+    await pool.query("UPDATE reservas SET ? WHERE idreservas = ?", [nuevo,id] )
+    res.redirect("./demo")
+};
+
+
+
+
 
 export const eliminarReserva = async (req, res, next) => {
     const { id } = req.params

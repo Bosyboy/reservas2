@@ -2,6 +2,77 @@
   <div class="row">
     <main>
       {{#if persona}}
+
+      {{#if empleado}}
+      <div class="py-5 text-center">
+        <h2>Bienvenido {{user.fullname}}</h2>
+        <p class="lead">Aqui se encuentran las personas que han reservado una hora con usted.</p>
+      </div>
+      <div class="row g-5">
+        <div class="col-md-5 col-lg-4 order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-primary">Confirmados</span>
+          </h4>
+          <ul class="list-group mb-3">
+            {{#each confirmados}}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div class="row">
+              <div class="col-8">
+                <small class="text-muted">{{servicio}}</small>
+                <h6 class="my-0">{{hora}}</h6>
+                <small class="text-muted">{{nombre}}</small>
+              </div>
+              <div class="col-4">
+                <span class="text-muted">{{fecha}}</span><br>
+              </div>
+              <div class="col-12">
+                <a name="" id="" class="btn btn-danger" href="/reservas/eliminar/{{idreservas}}" role="button">Anular</a>
+                <a name="" id="" class="btn btn-warning" href="/reservas/pendiente/{{idreservas}}" role="button">Pendiente</a>
+                <a name="" id="" class="btn btn-success" href="/reservas/atender/{{idreservas}}" role="button">Atender</a>
+              </div>
+              </div>
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+                <div class="col-md-7 col-lg-8">
+          <h4 class="mb-3">Reservaron con usted.</h4>
+          {{#if pendientes}}
+          <table id="example" class="table table-hover">
+            <thead class="text-muted">
+              <tr>
+                <th>Paciente</th>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each pendientes}}
+              <tr>
+                <td>
+                  {{nombre}}
+                </td>
+                <td>
+                  {{fecha}}
+                </td>
+                <td>
+                  {{hora}}
+                </td>
+                <td class="text-right">
+                  <a name="" id="" class="btn btn-success" href="/reservas/confirmar/{{idreservas}}" role="button"><i
+                      class="fa fa-check" aria-hidden="true"></i></a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          {{else}}
+          <p class="lead">Aún no hay reservas realizadas.</p>
+          <hr class="my-4">
+          {{/if}}
+        </div>        
+        {{else}}
       <div class="py-5 text-center">
         <h2>Bienvenido {{user.fullname}}</h2>
         <p class="lead">Para realizar una reserva. Debe seleccionar el especialista por el cual desea ser atendido</p>
@@ -22,11 +93,11 @@
               </div>
               <div class="col-4">
                 <span class="text-muted">{{fecha}}</span><br>
-                <p>
+              </div>
+                              <p>
                   <a name="" id="" class="btn btn-danger" href="/reservas/eliminar/{{idreservas}}"
                     role="button">Anular</a>
                 </p>
-              </div>
             </li>
             {{/each}}
             {{else}}
@@ -40,7 +111,7 @@
             </li>
             {{/if}}
           </ul>
-        </div>
+        </div>        
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3">Buscar hora</h4>
 
@@ -107,6 +178,7 @@
           <hr class="my-4">
           {{/if}}
         </div>
+        {{/if}}
       </div>
       {{else}}
       <div class="py-5 text-center">
@@ -193,7 +265,6 @@
           </form>
         </div>
       </div>
-
       {{/if}}
     </main>
   </div>

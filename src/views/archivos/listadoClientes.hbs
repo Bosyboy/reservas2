@@ -1,0 +1,80 @@
+<div class="col-12 p-2">
+  <div class="card text-center">
+    <div class="card-header">
+      Archivos
+    </div>
+    <div class="card-body">
+      <p class="card-text">Estos son los archivos que tenemos para ti.</p>
+          <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Archivo</th>
+        <th scope="col">Correo</th>      
+        <th scope="col">Responsable</th>
+        <th scope="col">Rom</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Subido</th>
+      </tr>
+    </thead>
+    <tbody>
+  {{#each misarchivos}}      
+      <tr>
+        <th scope="row">{{id_archivo}}</th>
+        <td> 
+          <a href="/uploads/{{nombre_archivo}}" target="_blank">
+                          <h5 class="card-title text-uppercase">
+                              {{descripcion}}
+                          </h5>
+                      </a></td>
+        <td>{{ correo }}</td>
+        <td>{{ fullname }}</td>      
+        <td>{{ nom_rom }}</td> 
+        <td>{{ categoria }}</td> 
+        <td>{{ timeago fecha_subida}}</td>
+      </tr>  
+  {{/each}}
+              </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{{#each archivos as | arrMarca idmenu |}}
+<div class="col-12 p-2">
+<div class="card text-center">
+<div class="card-header">
+{{idmenu}}
+</div>
+<div class="card-body">
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Archivo</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Responsable</th>
+      <th scope="col">Subido</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {{#each arrMarca}}
+    <tr>
+      <th scope="row">{{id_archivo}}</th>
+      <td>{{ categoria }}</td>
+      <td><a href="/uploads/{{nombre_archivo}}" target="_blank">
+          <h5 class="text-uppercase">{{descripcion}}</h5>
+        </a></td>
+      <td>{{ correo }}</td>
+      <td>{{ fullname }}</td>
+      <td>{{ timeago fecha_subida }}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+</div>
+ </div>
+{{/each}}

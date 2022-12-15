@@ -1,0 +1,39 @@
+<div class="col-md-4 mx-auto">
+
+    <div class="card">
+        <div class="card-body">
+            <form action="/archivos/edit/{{archivo.id_archivo}}" method="POST">
+                        <div class="form-group">
+                            <select type="rom_select" name="rom_select" class="form-control">
+                                <option value="{{archivo.id_rom}}">Mantener Rom</option>
+                                {{#each roms}}
+                                <option value="{{id_rom}}">{{nom_rom}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="descripcion" name="descripcion" class="form-control" placeholder="Descripcion" value="{{archivo.descripcion}}" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <input type="nombre_archivo" name="nombre_archivo" class="form-control" placeholder="Link de archivo" value="{{archivo.nombre_archivo}}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <select type="categoria" name="categoria" class="form-control">
+                                <option value="{{archivo.categoria}}">Mantener categoría</option>
+                                <option value="Informes">Informes</option>
+                                <option value="Instructivos">Instructivos</option>
+                                <option value="Checklist">Checklist</option>
+                                <option value="Proyectos">Proyectos</option>
+                                <option value="Operativos">Operativos</option>
+                                <option value="Mantencion">Mantencion</option>
+                            </select>
+                        </div>
+                <div class="form-group">
+                    <button class="btn btn-success btn-block">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
