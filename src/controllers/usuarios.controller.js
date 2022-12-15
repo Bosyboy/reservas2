@@ -6,14 +6,14 @@ export const crearUsuarios = (req, res) => {
 
 export const agregarUsuarios = async (req, res) => {
   const { title, url, description } = req.body;
-  const newLink = {
+  const newUsuario = {
     title,
     url,
     description,
     user_id: req.user.id,
   };
-  await pool.query("INSERT INTO usuarios set ?", [newLink]);
-  req.flash("success", "Link Saved Successfully");
+  await pool.query("INSERT INTO usuarios set ?", [newUsuario]);
+  req.flash("success", "Usuario Saved Successfully");
   res.redirect("/usuarios");
 };
 
@@ -25,7 +25,7 @@ export const mostrarUsuarios = async (req, res) => {
 export const borrarUsuario = async (req, res) => {
   const { id } = req.params;
   await pool.query("DELETE FROM users WHERE id = ?", [id]);
-  req.flash("success", "Link Removed Successfully");
+  req.flash("success", "Usuario Removed Successfully");
   res.redirect("/usuarios");
 };
 
@@ -38,12 +38,12 @@ export const editarUsuario = async (req, res) => {
 export const mostrarEditarUsuario = async (req, res) => {
   const { id } = req.params;
   const { title, description, url } = req.body;
-  const newLink = {
+  const newUsuario = {
     title,
     description,
     url,
   };
-  await pool.query("UPDATE usuarios set ? WHERE id = ?", [newLink, id]);
-  req.flash("success", "Link Updated Successfully");
+  await pool.query("UPDATE usuarios set ? WHERE id = ?", [newUsuario, id]);
+  req.flash("success", "Usuario Updated Successfully");
   res.redirect("/usuarios");
 };

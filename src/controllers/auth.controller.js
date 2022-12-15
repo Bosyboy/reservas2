@@ -29,7 +29,7 @@ export const signUp = async (req, res, next) => {
     if (err) {
       return next(err);
     }
-    return res.redirect("/profile");
+    return res.redirect("/reservas");
   });
 }
 
@@ -38,7 +38,7 @@ export const renderSignIn = (req, res, next) => {
 };
 
 export const signIn = passport.authenticate("local.signin", {
-  successRedirect: "/profile",
+  successRedirect: "/reservas",
   failureRedirect: "/signin",
   failureMessage: true,
   failureFlash: true,

@@ -17,6 +17,7 @@ export const agregarPersona = async (req, res, next) => {
         idpersonas : persona[0].idpersonas,
         prevision
     };
+    await pool.query("INSERT INTO pacientes set ?", [paciente])
     console.log(paciente)
     res.redirect("/reservas")
 };
@@ -35,10 +36,12 @@ export const buscarReserva = async (req, res, next) => {
     let arr1 = fechaForm.split('/')
     let fecha = arr1[2]+'-'+arr1[1]+'-'+arr1[0]
     console.log(serviciosForm)
+    const [persona] = await pool.query('SELECT * FROM personas WHERE idusuario = ?', [req.user.id])
+    const [pacientes] = await pool.query('SELECT a.*, b.* FROM personas a JOIN pacientes b ON a.idpersonas = b.idpersonas WHERE a.idusuario = ?', [req.user.id])    
     const [reservas] = await pool.query('SELECT a.idreservas, DATE_FORMAT(b.fecha,"%d/%m/%Y") AS fecha, DATE_FORMAT(c.comienza,"%H:%i") AS hora, CONCAT(e.nombres, " ",e.apepat, " ", e.apemat) AS nombre, f.nombre AS servicio FROM reservas a JOIN agenda b ON a.idagenda = b.idagenda JOIN bloque c ON b.idbloque = c.idbloque JOIN empleados d ON d.idempleados = b.idempleados JOIN personas e ON e.idpersonas = d.idpersonas JOIN servicios f ON f.idservicios = d.idservicios WHERE a.idusuario = ? ORDER BY a.idreservas ASC', [req.user.id]) 
     const [horas] = await pool.query('SELECT DATE_FORMAT(a.fecha,"%d/%m/%Y") AS fecha, CONCAT(d.nombres, " ",d.apepat, " ", d.apemat) AS nombre , DATE_FORMAT(b.comienza,"%H:%i") AS hora, a.idagenda FROM agenda as a INNER JOIN bloque AS b ON a.idbloque = b.idbloque INNER JOIN empleados AS c ON a.idempleados = c.idempleados INNER JOIN personas AS d ON c.idpersonas = d.idpersonas LEFT JOIN reservas e ON e.idagenda = a.idagenda WHERE DATE(a.fecha) >= ? AND c.idservicios = ? AND e.idagenda IS NULL ORDER by a.fecha ASC LIMIT 5', [fecha, serviciosForm]) 
     const [rows] = await pool.query("SELECT * FROM servicios")
-    res.render("reservas/reservas",{ servicios : rows , reservas : reservas , reservas : reservas, pacientes : pacientes, persona: persona})
+    res.render("reservas/reservas",{ servicios : rows , reservas : reservas , reservas : reservas, pacientes : pacientes, persona: persona, horas:horas})
 };
   
 export const tomarReserva = async (req, res, next) => {
