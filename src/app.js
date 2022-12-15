@@ -8,8 +8,6 @@ import cookieParser from "cookie-parser";
 import flash from "connect-flash";
 import expressMySQLSession from "express-mysql-session";
 import { fileURLToPath } from "url";
-import { RM } from '@request-metrics/browser-agent';
-RM.install({ token: 'f5wb3vu:p5wj8yx' });
 import routes from "./routes/index.js";
 import { port } from "./config.js";
 import "./lib/passport.js";
